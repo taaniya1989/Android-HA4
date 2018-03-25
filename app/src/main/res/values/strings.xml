@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Registration App</string>
+    <string name="authentication">Account Authentication</string>
+    <string name="email_id">Email</string>
+    <string name="hint_email_id">Enter Email</string>
+    <string name="password">Password</string>
+    <string name="hint_password">Enter Password</string>
+    <string name="sign_up">Create New Account</string>
+    <string name="login">Log In</string>
+
+    <string name="user_registration_text">User Registration</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="red_id">Red ID</string>
+    <string name="hint_first_name">Enter First Name</string>
+    <string name="hint_last_name">Enter Last Name</string>
+    <string name="hint_red_id">Enter Red ID</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+
+    <string name="EMAIL">EMAIL</string>
+    <string name="PASSWORD">PASSWORD</string>
+    <string name="title_activity_home_screen">HomeScreenActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+</resources>
