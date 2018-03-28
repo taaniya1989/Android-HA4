@@ -50,14 +50,22 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                 break;
             case R.id.submitButton:
                // Student newStudent = new Student(mUserRedID.getText().toString(),mUserFirstName.getText().toString(),mUserLastName.getText().toString(),mUserEmailId.getText().toString(),mUserPassword.getText().toString());
-                DatabaseHelper databaseHelper = new DatabaseHelper(this);
-                boolean insertData = databaseHelper.insertData(mUserRedID.getText().toString(),mUserFirstName.getText().toString(),mUserLastName.getText().toString(),mUserEmailId.getText().toString(),mUserPassword.getText().toString());
-                if(insertData){
+                if(Student.isValidEmail(mUserEmailId.getText().toString()) && Student.isValidPassword(mUserPassword.getText().toString())) {
+                    DatabaseHelper databaseHelper = new DatabaseHelper(this);
+                    boolean insertData = databaseHelper.insertData(mUserRedID.getText().toString(), mUserFirstName.getText().toString(), mUserLastName.getText().toString(), mUserEmailId.getText().toString(), mUserPassword.getText().toString());
+                    if (insertData) {
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Data not inserted", Toast.LENGTH_SHORT).show();
+                    }
                     finish();
-                }else{
-                    Toast.makeText(this,"Data not inserted",Toast.LENGTH_SHORT).show();
                 }
-                finish();
+                else
+                {
+                    mUserEmailId.setText("");
+                    mUserPassword.setText("");
+                    Toast.makeText(this, "Enter Valid User Email/Password", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }
