@@ -71,9 +71,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
 
                     if (emailFromDatabase.equalsIgnoreCase(mUserEmail.getText().toString()) && passwordFromDatabase.equalsIgnoreCase(mUserPassword.getText().toString())) {
-                        //    Intent homeActivity = new Intent(LoginActivity.this,HomeActivity.class);
-                        //    startActivity(homeActivity);
-                        Toast.makeText(this, "Authentication successful!!\nLogging In", Toast.LENGTH_LONG).show();
+                            Intent homeActivity = new Intent(LoginActivity.this,HomeScreenActivity.class);
+                            startActivity(homeActivity);
+                            finish();
+                            Toast.makeText(this, "Authentication successful!!\nLogging In", Toast.LENGTH_LONG).show();
                     }
                 }
                 else{

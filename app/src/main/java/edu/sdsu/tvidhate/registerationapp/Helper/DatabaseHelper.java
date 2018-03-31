@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table if not exists " +TABLE_NAME+"("+RED_ID+" TEXT," +
+        sqLiteDatabase.execSQL("create table if not exists " +TABLE_NAME+"("+RED_ID+" TEXT PRIMARY KEY," +
                 ""+FIRST_NAME+" TEXT," +
                 ""+LAST_NAME+" TEXT," +
                 ""+EMAIL_ID+" TEXT," +

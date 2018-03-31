@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        >
+        <Spinner
+            android:layout_width="240dp"
+            android:layout_height="32dp"
+            android:id="@+id/majorSpinner"
+            android:layout_weight="1"/>
+
+        <Spinner
+            android:layout_width="180dp"
+            android:layout_height="32dp"
+            android:id="@+id/levelSpinner"
+            android:layout_weight="1"
+            android:entries="@array/levels"/>
+
+        <Spinner
+            android:layout_width="180dp"
+            android:layout_height="32dp"
+            android:id="@+id/startTimeSpinner"
+            android:layout_weight="1"
+            android:entries="@array/startTimes"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:id="@+id/searchButton"
+            android:text="@string/search"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorBackground"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/subjectListView" />
+    </LinearLayout>
+
+</LinearLayout>
