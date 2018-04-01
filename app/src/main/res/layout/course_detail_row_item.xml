@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="0.5dp"
+        android:background="@color/colorBackground">
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/courseKey"
+            android:textSize="16dp"
+            android:padding="8dp"
+            android:background="@color/colorBackground"
+            android:textColor="@color/darkest_red"
+            android:text="Key"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/courseValue"
+            android:textSize="16dp"
+            android:padding="8dp"
+            android:background="@color/colorBackground"
+            android:textColor="@color/darkest_red"
+            android:text="Value"
+            />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

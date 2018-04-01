@@ -18,9 +18,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +32,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.sdsu.tvidhate.registerationapp.Activity.CourseDetailActivity;
+import edu.sdsu.tvidhate.registerationapp.Entity.Course;
+import edu.sdsu.tvidhate.registerationapp.Helper.RVCourseDetailAdapter;
 import edu.sdsu.tvidhate.registerationapp.Helper.RVCourseIDAdapter;
 import edu.sdsu.tvidhate.registerationapp.Helper.ServerConstants;
 import edu.sdsu.tvidhate.registerationapp.Helper.VolleyQueue;
@@ -43,7 +48,9 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
     private String majorValue="",levelValue="",startTimeValue="";
     RecyclerView rv;
     private String getClassIdsListURL;
+    private String getClassDetailsURL = SERVER_URL+CLASS_DETAILS+"?"+CLASS_ID+"=";;
     private List<String> courseListID;
+    private List<Course> courseDetailsList;
     private HashMap<String,Integer> majorsInfo = new HashMap<>();
 
     @Nullable
@@ -103,6 +110,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                         Integer courseID = (Integer)response.get(i);
                         Log.d("TPV", response.get(i).toString()+" "+courseID.toString());
                         courseListID.add(courseID.toString());
+                        //getCoursesDetails(getClassDetailsURL+courseID);
                     }
                     rv.setAdapter(new RVCourseIDAdapter(courseListID));
                     Log.i("TPV","In Response Listener "+courseListID.toString());

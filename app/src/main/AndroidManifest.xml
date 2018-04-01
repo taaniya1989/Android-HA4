@@ -22,7 +22,8 @@
         <activity android:name=".Activity.UserRegistrationActivity" />
         <activity
             android:name=".Activity.HomeScreenActivity"
-            android:label="@string/title_activity_home_screen"></activity>
+            android:label="@string/title_activity_home_screen" />
+        <activity android:name=".Activity.CourseDetailActivity"></activity>
     </application>
 
 </manifest>

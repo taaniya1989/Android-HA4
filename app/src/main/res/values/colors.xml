@@ -6,4 +6,7 @@
     <color name="colorBackground">#f1ebd6</color>
     <color name="colorText">#4B3831</color>
     <color name="colorDim">#e4d8b0</color>
+    <color name="darkRed">#ca4b44</color>
+    <color name="darkest_red">#270b09</color>
+    <color name="medium_red">#e29b97</color>
 </resources>
