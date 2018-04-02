@@ -18,4 +18,17 @@ public interface ServerConstants {
 
     String CLASS_DETAILS = "classdetails";
     String CLASS_ID = "classid";
+    String COURSE_ID = "courseid";
+
+    String REGISTER_CLASS = "registerclass";
+    String UNREGISTER_CLASS = "unregisterclass";
+
+    //DATABASE CONSTANTS
+    String STUDENT_TABLE = "student_details_table";
+    String REGISTERED_COURSE_TABLE = "registered_course_table";
+    String STUDENT_CLASSES = "studentclasses";
+
+    String WAITLIST_CLASS = "waitlistclass";
+    String UNWAITLIST_CLASS = "unwaitlistclass";
 }
+

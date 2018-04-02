@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <TextView
+        android:id="@+id/customDialogText"
+        android:text="Do you want to add course to waitlist?"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
+        android:gravity="center"
+        android:textSize="24dp"
+        android:layout_marginTop="32dp"
+        android:padding="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/yesButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:layout_weight="1"
+            android:background="@color/darkRed"
+            android:textColor="@color/colorBackground"
+            android:layout_marginRight="16dp"
+            />
+        <Button
+            android:id="@+id/noButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:layout_weight="1"
+            android:background="@color/darkest_red"
+            android:textColor="@color/colorBackground"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -17,7 +17,7 @@ import edu.sdsu.tvidhate.registerationapp.Activity.CourseDetailActivity;
 import edu.sdsu.tvidhate.registerationapp.Entity.Course;
 import edu.sdsu.tvidhate.registerationapp.R;
 
-public class RVCourseIDAdapter extends RecyclerView.Adapter<RVCourseIDAdapter.CourseViewHolder>{
+public class RVCourseIDAdapter extends RecyclerView.Adapter<RVCourseIDAdapter.CourseViewHolder> implements ServerConstants{
 
     private List<String> courses;
 
@@ -35,29 +35,16 @@ public class RVCourseIDAdapter extends RecyclerView.Adapter<RVCourseIDAdapter.Co
                 public void onClick(View v) {
                     // get position
                     int pos = getAdapterPosition();
+                    String clickedDataItem="";
 
                     // check if item still exists
                     if(pos != RecyclerView.NO_POSITION){
-                        String clickedDataItem = courses.get(pos);
+                        clickedDataItem = courses.get(pos);
                         Toast.makeText(v.getContext(), "You clicked " + clickedDataItem, Toast.LENGTH_SHORT).show();
+                        Intent courseDetailIntent = new Intent(v.getContext(), CourseDetailActivity.class);
+                        courseDetailIntent.putExtra(COURSE_ID,clickedDataItem);
+                        v.getContext().startActivity(courseDetailIntent);
                     }
-
-                    Intent courseDetailIntent = new Intent(v.getContext(), CourseDetailActivity.class);
-                    v.getContext().startActivity(courseDetailIntent);
-                    // custom dialog
-/*                    final Dialog dialog = new Dialog(v.getContext());
-                    dialog.setContentView(R.layout.custom_dialog);
-                    dialog.setTitle("Take Action");
-                    Button viewButton = dialog.findViewById(R.id.viewButton);
-                    viewButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                            Intent courseDetailIntent = new Intent(this, CourseDetailActivity.class);
-
-                        }
-                    });
-                    dialog.show();*/
                 }
             });
         }

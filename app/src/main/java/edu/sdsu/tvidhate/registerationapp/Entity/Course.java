@@ -40,50 +40,116 @@ public class Course {
 
     public Course(JSONObject jsonObject) {
         try {
-            this.mDescription = jsonObject.getString("description");
-            this.courseDetailsInHashMap.put("description",jsonObject.getString("description"));
-            this.mDepartment = jsonObject.getString("department");
-            this.courseDetailsInHashMap.put("department",jsonObject.getString("department"));
-            this.mSuffix = jsonObject.getString("suffix");
-            this.courseDetailsInHashMap.put("suffix",jsonObject.getString("suffix"));
-            this.mBuilding = jsonObject.getString("building");
-            this.courseDetailsInHashMap.put("building",jsonObject.getString("building"));
-            this.mStartTime = jsonObject.getString("startTime");
-            this.courseDetailsInHashMap.put("startTime",jsonObject.getString("startTime"));
-            this.mMeetingType = jsonObject.getString("meetingType");
-            this.courseDetailsInHashMap.put("meetingType",jsonObject.getString("meetingType"));
-            this.mSection = jsonObject.getString("section");
-            this.courseDetailsInHashMap.put("section",jsonObject.getString("section"));
-            this.mEndTime = jsonObject.getString("endTime");
-            this.courseDetailsInHashMap.put("endTime",jsonObject.getString("endTime"));
-            this.mEnrolled = jsonObject.getString("enrolled");
-            this.courseDetailsInHashMap.put("enrolled",jsonObject.getString("enrolled"));
-            this.mDays = jsonObject.getString("days");
-            this.courseDetailsInHashMap.put("days",jsonObject.getString("days"));
-            this.mPrerequisite = jsonObject.getString("prerequisite");
-            this.courseDetailsInHashMap.put("prerequisite",jsonObject.getString("prerequisite"));
-            this.mTitle = jsonObject.getString("title");
-            this.courseDetailsInHashMap.put("title",jsonObject.getString("title"));
-            this.mId = jsonObject.getString("id");
-            this.courseDetailsInHashMap.put("id",jsonObject.getString("id"));
-            this.mInstructor = jsonObject.getString("instructor");
-            this.courseDetailsInHashMap.put("instructor",jsonObject.getString("instructor"));
-            this.mScheduleNo = jsonObject.getString("schedule#");
-            this.courseDetailsInHashMap.put("schedule#",jsonObject.getString("schedule#"));
-            this.mUnit = jsonObject.getString("units");
-            this.courseDetailsInHashMap.put("units",jsonObject.getString("units"));
-            this.mRoom = jsonObject.getString("room");
-            this.courseDetailsInHashMap.put("room",jsonObject.getString("room"));
-            this.mWaitlist = jsonObject.getString("waitlist");
-            this.courseDetailsInHashMap.put("waitlist",jsonObject.getString("waitlist"));
-            this.mSeats = jsonObject.getString("seats");
-            this.courseDetailsInHashMap.put("seats",jsonObject.getString("seats"));
-            this.mFullTitle = jsonObject.getString("fullTitle");
-            this.courseDetailsInHashMap.put("fullTitle",jsonObject.getString("fullTitle"));
-            this.mSubject = jsonObject.getString("subject");
-            this.courseDetailsInHashMap.put("subject",jsonObject.getString("subject"));
-            this.mCourseNo = jsonObject.getString("course#");
-            this.courseDetailsInHashMap.put("course#",jsonObject.getString("course#"));
+
+            if(jsonObject.has("description"))
+            {
+                this.mDescription = jsonObject.getString("description");
+                this.courseDetailsInHashMap.put("description",jsonObject.getString("description"));
+            }
+            if(jsonObject.has("department"))
+            {
+                this.mDepartment = jsonObject.getString("department");
+                this.courseDetailsInHashMap.put("department",jsonObject.getString("department"));
+            }
+            if(jsonObject.has("suffix"))
+            {
+                this.mSuffix = jsonObject.getString("suffix");
+                this.courseDetailsInHashMap.put("suffix",jsonObject.getString("suffix"));
+            }
+            if(jsonObject.has("building")) {
+                this.mBuilding = jsonObject.getString("building");
+                this.courseDetailsInHashMap.put("building", jsonObject.getString("building"));
+            }
+            if(jsonObject.has("startTime"))
+            {
+                this.mStartTime = jsonObject.getString("startTime");
+                this.courseDetailsInHashMap.put("startTime",jsonObject.getString("startTime"));
+            }
+            if(jsonObject.has("meetingType"))
+            {
+                this.mMeetingType = jsonObject.getString("meetingType");
+                this.courseDetailsInHashMap.put("meetingType",jsonObject.getString("meetingType"));
+            }
+            if(jsonObject.has("section"))
+            {
+                this.mSection = jsonObject.getString("section");
+                this.courseDetailsInHashMap.put("section",jsonObject.getString("section"));
+            }
+            if(jsonObject.has("endTime"))
+            {
+                this.mEndTime = jsonObject.getString("endTime");
+                this.courseDetailsInHashMap.put("endTime",jsonObject.getString("endTime"));
+            }
+            if(jsonObject.has("enrolled"))
+            {
+                this.mEnrolled = jsonObject.getString("enrolled");
+                this.courseDetailsInHashMap.put("enrolled",jsonObject.getString("enrolled"));
+            }
+            if(jsonObject.has("days"))
+            {
+                this.mDays = jsonObject.getString("days");
+                this.courseDetailsInHashMap.put("days",jsonObject.getString("days"));
+            }
+            if(jsonObject.has("prerequisite"))
+            {
+                this.mPrerequisite = jsonObject.getString("prerequisite");
+                this.courseDetailsInHashMap.put("prerequisite", jsonObject.getString("prerequisite"));
+            }
+            if(jsonObject.has("title"))
+            {
+                this.mTitle = jsonObject.getString("title");
+                this.courseDetailsInHashMap.put("title",jsonObject.getString("title"));
+            }
+            if(jsonObject.has("id"))
+            {
+                this.mId = jsonObject.getString("id");
+                this.courseDetailsInHashMap.put("id",jsonObject.getString("id"));
+            }
+            if(jsonObject.has("instructor"))
+            {
+                this.mInstructor = jsonObject.getString("instructor");
+                this.courseDetailsInHashMap.put("instructor",jsonObject.getString("instructor"));
+            }
+            if(jsonObject.has("schedule#"))
+            {
+                this.mScheduleNo = jsonObject.getString("schedule#");
+                this.courseDetailsInHashMap.put("schedule#", jsonObject.getString("schedule#"));
+            }
+            if(jsonObject.has("units"))
+            {
+                this.mUnit = jsonObject.getString("units");
+                this.courseDetailsInHashMap.put("units",jsonObject.getString("units"));
+            }
+            if(jsonObject.has("room"))
+            {
+                this.mRoom = jsonObject.getString("room");
+                this.courseDetailsInHashMap.put("room", jsonObject.getString("room"));
+            }
+            if(jsonObject.has("waitlist"))
+            {
+                this.mWaitlist = jsonObject.getString("waitlist");
+                this.courseDetailsInHashMap.put("waitlist",jsonObject.getString("waitlist"));
+            }
+            if(jsonObject.has("seats"))
+            {
+                this.mSeats = jsonObject.getString("seats");
+                this.courseDetailsInHashMap.put("seats", jsonObject.getString("seats"));
+            }
+            if(jsonObject.has("fullTitle"))
+            {
+                this.mFullTitle = jsonObject.getString("fullTitle");
+                this.courseDetailsInHashMap.put("fullTitle", jsonObject.getString("fullTitle"));
+            }
+            if(jsonObject.has("subject"))
+            {
+                this.mSubject = jsonObject.getString("subject");
+                this.courseDetailsInHashMap.put("subject", jsonObject.getString("subject"));
+            }
+            if(jsonObject.has("course#"))
+            {
+                this.mCourseNo = jsonObject.getString("course#");
+                this.courseDetailsInHashMap.put("course#", jsonObject.getString("course#"));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

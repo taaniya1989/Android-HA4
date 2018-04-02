@@ -10,7 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DatabaseHelper extends SQLiteOpenHelper{
+public class DatabaseHelper extends SQLiteOpenHelper implements ServerConstants{
     public static final String DATABASE_NAME = "RegistrationApp.db";
     public static final String TABLE_NAME = "student_details_table";
     public static final String RED_ID = "red_id";

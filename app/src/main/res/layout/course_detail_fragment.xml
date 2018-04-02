@@ -31,6 +31,16 @@
             android:layout_weight="1"
             android:layout_margin="16dp"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dropCourseButton"
+            android:text="@string/drop"
+            android:background="@color/darkRed"
+            android:textColor="@color/colorBackground"
+            android:layout_weight="1"
+            android:layout_margin="16dp"/>
+
     </LinearLayout>
 
 

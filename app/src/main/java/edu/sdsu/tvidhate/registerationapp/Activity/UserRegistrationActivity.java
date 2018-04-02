@@ -39,8 +39,8 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         setContentView(R.layout.activity_user_registration);
 
         Bundle userData = getIntent().getExtras();
-        String userEmail = userData.getString(getString(R.string.EMAIL));
-        String userPassword = userData.getString(getString(R.string.PASSWORD));
+        String userEmail = userData.getString(STUDENT_EMAIL);
+        String userPassword = userData.getString(STUDENT_PASSWORD);
 
         mUserFirstName = findViewById(R.id.userFirstName);
         mUserLastName = findViewById(R.id.userLastName);

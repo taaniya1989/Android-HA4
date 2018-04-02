@@ -12,13 +12,16 @@ import android.widget.Toast;
 
 import edu.sdsu.tvidhate.registerationapp.Entity.Student;
 import edu.sdsu.tvidhate.registerationapp.Helper.DatabaseHelper;
+import edu.sdsu.tvidhate.registerationapp.Helper.ServerConstants;
 import edu.sdsu.tvidhate.registerationapp.R;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,ServerConstants{
 
     private EditText mUserEmail,mUserPassword;
     private Button mSignUp,mLogIn;
     private static final int INTENT_REQUESTCODE = 333;
+
+    public static Student sessionStudent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,21 +35,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mSignUp.setOnClickListener(this);
         mLogIn.setOnClickListener(this);
-
     }
 
     @Override
     public void onClick(View view) {
 
-        String emailFromDatabase = "";
-        String passwordFromDatabase = "";
+        String emailFromDatabase="",passwordFromDatabase="",redidFromDatabase="",fnameFromDatabase="",lnameFromDatabase="";
 
         switch (view.getId())
         {
             case R.id.login_sign_up:
                 Intent goToUserRegistrationActivty = new Intent(this,UserRegistrationActivity.class);
-                goToUserRegistrationActivty.putExtra("EMAIL",mUserEmail.getText().toString());
-                goToUserRegistrationActivty.putExtra("PASSWORD",mUserPassword.getText().toString());
+                goToUserRegistrationActivty.putExtra(STUDENT_EMAIL,mUserEmail.getText().toString());
+                goToUserRegistrationActivty.putExtra(STUDENT_PASSWORD,mUserPassword.getText().toString());
                 startActivityForResult(goToUserRegistrationActivty,INTENT_REQUESTCODE);
                 Toast.makeText(this,mSignUp.getText().toString(),Toast.LENGTH_LONG).show();
                 break;
@@ -64,17 +65,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
 
                     while (results.moveToNext()) {
+                        redidFromDatabase = results.getString(0);
+                        fnameFromDatabase = results.getString(1);
+                        lnameFromDatabase = results.getString(2);
                         emailFromDatabase = results.getString(3);
                         passwordFromDatabase = results.getString(4);
+
                         Log.i("TPV", "email id from table= " + emailFromDatabase);
                         Log.i("TPV", "pass from table= " + passwordFromDatabase);
                     }
 
                     if (emailFromDatabase.equalsIgnoreCase(mUserEmail.getText().toString()) && passwordFromDatabase.equalsIgnoreCase(mUserPassword.getText().toString())) {
-                            Intent homeActivity = new Intent(LoginActivity.this,HomeScreenActivity.class);
-                            startActivity(homeActivity);
-                            finish();
-                            Toast.makeText(this, "Authentication successful!!\nLogging In", Toast.LENGTH_LONG).show();
+                        sessionStudent = new Student(redidFromDatabase,fnameFromDatabase,lnameFromDatabase,emailFromDatabase,passwordFromDatabase);
+                        Log.i("TPV",sessionStudent.toString());
+                        Intent homeActivity = new Intent(LoginActivity.this,HomeScreenActivity.class);
+                        startActivity(homeActivity);
+                        finish();
+                        Toast.makeText(this, "Authentication successful!!\nLogging In", Toast.LENGTH_LONG).show();
                     }
                 }
                 else{
