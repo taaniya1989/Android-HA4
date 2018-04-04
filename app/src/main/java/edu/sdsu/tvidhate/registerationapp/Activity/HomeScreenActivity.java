@@ -3,13 +3,11 @@ package edu.sdsu.tvidhate.registerationapp.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
-
 import edu.sdsu.tvidhate.registerationapp.Fragments.DashboardFragment;
 import edu.sdsu.tvidhate.registerationapp.Fragments.HomeFragment;
+import edu.sdsu.tvidhate.registerationapp.Fragments.NotificationFragment;
 import edu.sdsu.tvidhate.registerationapp.R;
 
 public class HomeScreenActivity extends AppCompatActivity {
@@ -28,6 +26,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     fragmentManager.beginTransaction().replace(R.id.DataFrame,new DashboardFragment()).commit();
                     return true;
                 case R.id.navigation_notifications:
+                    fragmentManager.beginTransaction().replace(R.id.DataFrame,new NotificationFragment()).commit();
                     return true;
             }
             return false;

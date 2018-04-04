@@ -1,15 +1,12 @@
 package edu.sdsu.tvidhate.registerationapp.Helper;
 
-import android.app.Dialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -19,28 +16,31 @@ import edu.sdsu.tvidhate.registerationapp.R;
 
 public class RVCourseIDAdapter extends RecyclerView.Adapter<RVCourseIDAdapter.CourseViewHolder> implements ServerConstants{
 
-    private List<String> courses;
+    private List<Course> courses;
 
     class CourseViewHolder extends RecyclerView.ViewHolder {
         RecyclerView rv;
-        TextView mCourseID;
+        TextView mCourseID,mCourseTitle,mCourseTime,mCourseInstructor,mCourseWaitlist;
 
         CourseViewHolder(View itemView) {
             super(itemView);
             rv = itemView.findViewById(R.id.subjectListView);
             mCourseID = itemView.findViewById(R.id.courseid);
+            mCourseTitle = itemView.findViewById(R.id.coursetitle);
+            mCourseTime = itemView.findViewById(R.id.coursetime);
+            mCourseInstructor = itemView.findViewById(R.id.courseinstructor);
+            mCourseWaitlist = itemView.findViewById(R.id.coursewaitlist);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     // get position
                     int pos = getAdapterPosition();
-                    String clickedDataItem="";
+                    String clickedDataItem;
 
                     // check if item still exists
                     if(pos != RecyclerView.NO_POSITION){
-                        clickedDataItem = courses.get(pos);
-                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem, Toast.LENGTH_SHORT).show();
+                        clickedDataItem = courses.get(pos).getmId();
                         Intent courseDetailIntent = new Intent(v.getContext(), CourseDetailActivity.class);
                         courseDetailIntent.putExtra(COURSE_ID,clickedDataItem);
                         v.getContext().startActivity(courseDetailIntent);
@@ -50,26 +50,32 @@ public class RVCourseIDAdapter extends RecyclerView.Adapter<RVCourseIDAdapter.Co
         }
     }
 
+    @NonNull
     @Override
-    public CourseViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_item, viewGroup, false);
-        CourseViewHolder pvh = new CourseViewHolder(v);
-        return pvh;
+        return new CourseViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(CourseViewHolder courseViewHolder, int i) {
-    courseViewHolder.
-        mCourseID.setText(courses.get(i).toString());
+    public void onBindViewHolder(@NonNull CourseViewHolder courseViewHolder, int i)
+    {
+        String courseNumber = courses.get(i).getmSubject()+"-"+courses.get(i).getmCourseNo();
+        String courseTimes = courses.get(i).getmStartTime()+"-"+courses.get(i).getmEndTime();
+        courseViewHolder.mCourseID.setText(courseNumber);
+        courseViewHolder.mCourseTitle.setText(courses.get(i).getmTitle());
+        courseViewHolder.mCourseInstructor.setText(courses.get(i).getmInstructor());
+        courseViewHolder.mCourseTime.setText(courseTimes);
+        courseViewHolder.mCourseWaitlist.setText(courses.get(i).getmWaitlist());
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public RVCourseIDAdapter(List<String> courses) {
-        this.courses = courses;
+    public RVCourseIDAdapter(List<Course> courses) {
+       this.courses = courses;
     }
 
     @Override

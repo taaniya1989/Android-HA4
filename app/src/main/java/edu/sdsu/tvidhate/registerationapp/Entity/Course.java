@@ -13,6 +13,10 @@ public class Course {
             mSeats,mFullTitle,mSubject,mCourseNo;
     private HashMap<String,String> courseDetailsInHashMap = new HashMap<>();
 
+    public Course(){
+
+    }
+
     public Course(String mDescription, String mDepartment, String mSuffix, String mBuilding, String mStartTime, String mMeetingType, String mSection, String mEndTime, String mEnrolled, String mDays, String mPrerequisite, String mTitle, String mId, String mInstructor, String mScheduleNo, String mUnit, String mRoom, String mWaitlist, String mSeats, String mFullTitle, String mSubject, String mCourseNo) {
         this.mDescription = mDescription;
         this.mDepartment = mDepartment;
@@ -161,6 +165,182 @@ public class Course {
 
     public void setCourseDetailsInHashMap(HashMap<String, String> courseDetailsInHashMap) {
         this.courseDetailsInHashMap = courseDetailsInHashMap;
+    }
+
+    public String getmDescription() {
+        return mDescription;
+    }
+
+    public void setmDescription(String mDescription) {
+        this.mDescription = mDescription;
+    }
+
+    public String getmDepartment() {
+        return mDepartment;
+    }
+
+    public void setmDepartment(String mDepartment) {
+        this.mDepartment = mDepartment;
+    }
+
+    public String getmSuffix() {
+        return mSuffix;
+    }
+
+    public void setmSuffix(String mSuffix) {
+        this.mSuffix = mSuffix;
+    }
+
+    public String getmBuilding() {
+        return mBuilding;
+    }
+
+    public void setmBuilding(String mBuilding) {
+        this.mBuilding = mBuilding;
+    }
+
+    public String getmStartTime() {
+        return mStartTime;
+    }
+
+    public void setmStartTime(String mStartTime) {
+        this.mStartTime = mStartTime;
+    }
+
+    public String getmMeetingType() {
+        return mMeetingType;
+    }
+
+    public void setmMeetingType(String mMeetingType) {
+        this.mMeetingType = mMeetingType;
+    }
+
+    public String getmSection() {
+        return mSection;
+    }
+
+    public void setmSection(String mSection) {
+        this.mSection = mSection;
+    }
+
+    public String getmEndTime() {
+        return mEndTime;
+    }
+
+    public void setmEndTime(String mEndTime) {
+        this.mEndTime = mEndTime;
+    }
+
+    public String getmEnrolled() {
+        return mEnrolled;
+    }
+
+    public void setmEnrolled(String mEnrolled) {
+        this.mEnrolled = mEnrolled;
+    }
+
+    public String getmDays() {
+        return mDays;
+    }
+
+    public void setmDays(String mDays) {
+        this.mDays = mDays;
+    }
+
+    public String getmPrerequisite() {
+        return mPrerequisite;
+    }
+
+    public void setmPrerequisite(String mPrerequisite) {
+        this.mPrerequisite = mPrerequisite;
+    }
+
+    public String getmTitle() {
+        return mTitle;
+    }
+
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public String getmId() {
+        return mId;
+    }
+
+    public void setmId(String mId) {
+        this.mId = mId;
+    }
+
+    public String getmInstructor() {
+        return mInstructor;
+    }
+
+    public void setmInstructor(String mInstructor) {
+        this.mInstructor = mInstructor;
+    }
+
+    public String getmScheduleNo() {
+        return mScheduleNo;
+    }
+
+    public void setmScheduleNo(String mScheduleNo) {
+        this.mScheduleNo = mScheduleNo;
+    }
+
+    public String getmUnit() {
+        return mUnit;
+    }
+
+    public void setmUnit(String mUnit) {
+        this.mUnit = mUnit;
+    }
+
+    public String getmRoom() {
+        return mRoom;
+    }
+
+    public void setmRoom(String mRoom) {
+        this.mRoom = mRoom;
+    }
+
+    public String getmWaitlist() {
+        return mWaitlist;
+    }
+
+    public void setmWaitlist(String mWaitlist) {
+        this.mWaitlist = mWaitlist;
+    }
+
+    public String getmSeats() {
+        return mSeats;
+    }
+
+    public void setmSeats(String mSeats) {
+        this.mSeats = mSeats;
+    }
+
+    public String getmFullTitle() {
+        return mFullTitle;
+    }
+
+    public void setmFullTitle(String mFullTitle) {
+        this.mFullTitle = mFullTitle;
+    }
+
+    public String getmSubject() {
+        return mSubject;
+    }
+
+    public void setmSubject(String mSubject) {
+        this.mSubject = mSubject;
+    }
+
+    public String getmCourseNo() {
+        return mCourseNo;
+    }
+
+    public void setmCourseNo(String mCourseNo) {
+        this.mCourseNo = mCourseNo;
     }
 
     @Override

@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.sdsu.tvidhate.registerationapp.Entity.Notifications;
 import edu.sdsu.tvidhate.registerationapp.Entity.Student;
 import edu.sdsu.tvidhate.registerationapp.Helper.DatabaseHelper;
 import edu.sdsu.tvidhate.registerationapp.Helper.ServerConstants;
@@ -18,15 +22,17 @@ import edu.sdsu.tvidhate.registerationapp.R;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,ServerConstants{
 
     private EditText mUserEmail,mUserPassword;
-    private Button mSignUp,mLogIn;
     private static final int INTENT_REQUESTCODE = 333;
 
     public static Student sessionStudent;
+    public static DatabaseHelper dbHelper;
+    public static List<Notifications> allNotifications;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Button mSignUp,mLogIn;
 
         mUserEmail = findViewById(R.id.userEmail);
         mUserPassword = findViewById(R.id.userPassword);
@@ -35,52 +41,61 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mSignUp.setOnClickListener(this);
         mLogIn.setOnClickListener(this);
+
+        dbHelper = new DatabaseHelper(this);
+        allNotifications = new ArrayList<>();
     }
 
     @Override
     public void onClick(View view) {
 
-        String emailFromDatabase="",passwordFromDatabase="",redidFromDatabase="",fnameFromDatabase="",lnameFromDatabase="";
+        String emailFromDatabase="",passwordFromDatabase="",fnameFromDatabase="",lnameFromDatabase="",redidFromDatabase="";
 
         switch (view.getId())
         {
             case R.id.login_sign_up:
+
                 Intent goToUserRegistrationActivty = new Intent(this,UserRegistrationActivity.class);
+
                 goToUserRegistrationActivty.putExtra(STUDENT_EMAIL,mUserEmail.getText().toString());
                 goToUserRegistrationActivty.putExtra(STUDENT_PASSWORD,mUserPassword.getText().toString());
+
                 startActivityForResult(goToUserRegistrationActivty,INTENT_REQUESTCODE);
-                Toast.makeText(this,mSignUp.getText().toString(),Toast.LENGTH_LONG).show();
+
                 break;
 
             case R.id.login_submit:
-                if(Student.isValidEmail(mUserEmail.getText().toString()) && Student.isValidPassword(mUserPassword.getText().toString())) {
 
-                    Log.i("TPV","Valid Input "+mUserEmail.getText().toString()+" "+mUserPassword.getText().toString());
-                    DatabaseHelper databaseHelper = new DatabaseHelper(LoginActivity.this);
-                    Cursor results = databaseHelper.authenticateUser(mUserEmail.getText().toString(), mUserPassword.getText().toString());
+                if(Student.isValidEmail(mUserEmail.getText().toString())
+                        && Student.isValidPassword(mUserPassword.getText().toString()))
+                {
+                    Cursor results = dbHelper.authenticateUser(mUserEmail.getText().toString(), mUserPassword.getText().toString());
 
                     if (results.getCount() == 0) {
+                        Log.i("TPV","In LoginActivity : User Doesn't Exist");
                         Toast.makeText(LoginActivity.this, "User Doesn't Exist", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    while (results.moveToNext()) {
+                    while (results.moveToNext())
+                    {
                         redidFromDatabase = results.getString(0);
                         fnameFromDatabase = results.getString(1);
                         lnameFromDatabase = results.getString(2);
                         emailFromDatabase = results.getString(3);
                         passwordFromDatabase = results.getString(4);
-
-                        Log.i("TPV", "email id from table= " + emailFromDatabase);
-                        Log.i("TPV", "pass from table= " + passwordFromDatabase);
                     }
 
-                    if (emailFromDatabase.equalsIgnoreCase(mUserEmail.getText().toString()) && passwordFromDatabase.equalsIgnoreCase(mUserPassword.getText().toString())) {
+                    if (emailFromDatabase.equalsIgnoreCase(mUserEmail.getText().toString())
+                            && passwordFromDatabase.equalsIgnoreCase(mUserPassword.getText().toString()))
+                    {
+
                         sessionStudent = new Student(redidFromDatabase,fnameFromDatabase,lnameFromDatabase,emailFromDatabase,passwordFromDatabase);
-                        Log.i("TPV",sessionStudent.toString());
+
                         Intent homeActivity = new Intent(LoginActivity.this,HomeScreenActivity.class);
                         startActivity(homeActivity);
                         finish();
+
                         Toast.makeText(this, "Authentication successful!!\nLogging In", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -89,7 +104,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
         }
-        Log.i("TPV",mUserEmail.getText().toString()+" "+mUserPassword.getText().toString());
     }
 
     @Override
@@ -98,26 +112,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (resultCode) {
             case RESULT_OK:
                 if(requestCode == INTENT_REQUESTCODE){
-                    mUserEmail.setText(data.getStringExtra(getString(R.string.EMAIL)));
-                    mUserPassword.setText(data.getStringExtra(getString(R.string.PASSWORD)));
+                    mUserEmail.setText(data.getStringExtra(STUDENT_EMAIL));
+                    mUserPassword.setText(data.getStringExtra(STUDENT_PASSWORD));
                     finish();
                 }
         }
-    }
-
-    public EditText getmUserEmail() {
-        return mUserEmail;
-    }
-
-    public void setmUserEmail(EditText mUserEmail) {
-        this.mUserEmail = mUserEmail;
-    }
-
-    public EditText getmUserPassword() {
-        return mUserPassword;
-    }
-
-    public void setmUserPassword(EditText mUserPassword) {
-        this.mUserPassword = mUserPassword;
     }
 }

@@ -1,6 +1,8 @@
 package edu.sdsu.tvidhate.registerationapp.Activity;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,15 +32,15 @@ import edu.sdsu.tvidhate.registerationapp.R;
 public class CourseDetailActivity extends AppCompatActivity implements View.OnClickListener,ServerConstants{
 
     private RecyclerView courseDetailRecyclerView;
-    private Button mAddButton,mBackButton,mDropButton;
     private String courseID;
     HashMap<String ,String> courseDetails = new HashMap<>();
-    private String getCourseDetailsListURL="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_detail_fragment);
+        Button mAddButton,mBackButton,mDropButton;
+
         mBackButton = findViewById(R.id.backButton);
         mAddButton = findViewById(R.id.addCourseButton);
         mDropButton = findViewById(R.id.dropCourseButton);
@@ -51,8 +53,10 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
         LinearLayoutManager llm = new LinearLayoutManager(this);
         courseDetailRecyclerView.setLayoutManager(llm);
 
-        setCourseID(getIntent().getExtras().getString(COURSE_ID));
-        getCourseDetailsListURL = SERVER_URL+CLASS_DETAILS+"?"+CLASS_ID+"="+getCourseID();
+        Bundle intentValues = getIntent().getExtras();
+        if(intentValues != null)
+            setCourseID(intentValues.getString(COURSE_ID));
+        String getCourseDetailsListURL = SERVER_URL + CLASS_DETAILS + "?" + CLASS_ID + "=" + getCourseID();
         getCoursesDetails(getCourseDetailsListURL);
     }
 
@@ -84,50 +88,97 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
 
     public void getCoursesDetails(String getCourseDetailsListURL)
     {
-        Log.i("TPV",getCourseDetailsListURL);
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,getCourseDetailsListURL,null ,new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
+    //    Cursor res = LoginActivity.dbHelper.getCourse(courseID);
+      //  if(res.getCount() == 0)
+       // {
+            Log.i("TPV",getCourseDetailsListURL);
+            JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,getCourseDetailsListURL,null ,new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
                     Course currentCourse = new Course(response);
                     Log.i("TPV",currentCourse.toString());
                     courseDetails = currentCourse.getCourseDetailsInHashMap();
-                courseDetailRecyclerView.setAdapter(new RVCourseDetailAdapter(courseDetails));
-                Log.i("TPV","In Response Listener "+courseDetails.toString());
-            }}, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("TPV", error.toString());
+                    courseDetailRecyclerView.setAdapter(new RVCourseDetailAdapter(courseDetails));
+                    Log.i("TPV","In Response Listener "+courseDetails.toString());
+                }}, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("TPV", error.toString());
+                }
+            });
+            VolleyQueue.instance(this).add(req);
+       /* }
+        else
+        {
+            Course currentCourse = new Course();
+            while(res.moveToNext())
+            {
+                currentCourse.setmId(res.getString(0));
+                currentCourse.setmDescription(res.getString(1));
+                currentCourse.setmDepartment(res.getString(2));
+                currentCourse.setmSuffix(res.getString(3));
+                currentCourse.setmBuilding(res.getString(4));
+                currentCourse.setmStartTime(res.getString(5));
+                currentCourse.setmMeetingType(res.getString(6));
+                currentCourse.setmSection(res.getString(7));
+                currentCourse.setmEndTime(res.getString(8));
+                currentCourse.setmEnrolled(res.getString(9));
+                currentCourse.setmDays(res.getString(10));
+                currentCourse.setmPrerequisite(res.getString(11));
+                currentCourse.setmTitle(res.getString(12));
+                currentCourse.setmInstructor(res.getString(13));
+                currentCourse.setmScheduleNo(res.getString(14));
+                currentCourse.setmUnit(res.getString(15));
+                currentCourse.setmRoom(res.getString(16));
+                currentCourse.setmWaitlist(res.getString(17));
+                currentCourse.setmSeats(res.getString(18));
+                currentCourse.setmFullTitle(res.getString(19));
+                currentCourse.setmSubject(res.getString(20));
+                currentCourse.setmCourseNo(res.getString(21));
             }
-        });
-        VolleyQueue.instance(this).add(req);
+            courseDetailRecyclerView.setAdapter(new RVCourseDetailAdapter(currentCourse.getCourseDetailsInHashMap()));
+        }*/
     }
 
     public void dropStudentToCourse(Student currentStudent){
 
         final JSONObject postParams = new JSONObject();
-        Long courseNumber = new Long(getCourseID());
+        Long courseNumber = Long.valueOf(getCourseID());
 
         try {
             postParams.put(STUDENT_RED_ID,currentStudent.getmRedId());
             postParams.put(STUDENT_PASSWORD,currentStudent.getmPassword());
             postParams.put(COURSE_ID,courseNumber);
         } catch (JSONException error) {
-            Log.e("rew", "JSON eorror", error);
+            Log.e("TPV", "JSON error", error);
             return;
         }
 
         Response.Listener<JSONObject> success = new Response.Listener<JSONObject>()
         {
             public void onResponse(JSONObject response) {
-                Log.i("rew", response.toString());
+                Log.i("TPV", response.toString());
+                try {
+                    if(response.has("error")) {
+                        if (response.getString("error").equalsIgnoreCase("Course dropped"))
+                            Toast.makeText(getApplicationContext(), "Course Dropped", Toast.LENGTH_LONG).show();
+                        if(response.getString("error").equalsIgnoreCase("Student not enrolled in course"))
+                            dropStudentToCourseWaitlist(LoginActivity.sessionStudent);
+                    }
+                    if(response.has("ok"))
+                        if(response.getString("ok").equalsIgnoreCase("Student already in course"))
+                            Toast.makeText(getApplicationContext(), "Student is Already enrolled in course", Toast.LENGTH_LONG).show();
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
-//Process response here
         };
 
         Response.ErrorListener failure = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("rew", "post fail " + new String(error.networkResponse.data));
+                Log.i("TPV", "post fail " + new String(error.networkResponse.data));
             }
         };
 
@@ -137,11 +188,10 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
         VolleyQueue.instance(this).add(postRequest);
     }
 
-
     public void addStudentToCourse(Student currentStudent){
 
         final JSONObject postParams = new JSONObject();
-        Long courseNumber = new Long(getCourseID());
+        Long courseNumber = Long.valueOf(getCourseID());
 
 
         try {
@@ -149,45 +199,54 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
             postParams.put(STUDENT_PASSWORD,currentStudent.getmPassword());
             postParams.put(COURSE_ID,courseNumber);
         } catch (JSONException error) {
-            Log.e("rew", "JSON eorror", error);
+            Log.e("TPV", "JSON error", error);
             return;
         }
 
         Response.Listener<JSONObject> success = new Response.Listener<JSONObject>()
         {
             public void onResponse(JSONObject response) {
-                Log.i("rew", response.toString());
+                Log.i("TPV", response.toString());
+
                 try {
-                    String errorMessage = response.getString("error");
+                    if(response.has("error"))
+                    {
+                        String errorMessage = response.getString("error");
+                        if(errorMessage.equalsIgnoreCase("Student already enrolled in 3 classes"))
+                        {
+                            Toast.makeText(getApplicationContext(), "Student cannot add more than 3 courses", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        if(errorMessage.equalsIgnoreCase("Course is full"))
+                        {
+                            Log.i("TPV","is full ");
+                            onWaitlistDialog();
+                        }
+                    }
+                    if(response.has("ok")) {
+                        String okMessage = response.getString("ok");
+                        if (okMessage.equalsIgnoreCase("Course added")) {
+                            Toast.makeText(getApplicationContext(), "Course Added", Toast.LENGTH_LONG).show();
+                        }
+                    }
 
-                    if(errorMessage.equalsIgnoreCase("Student already enrolled in 3 classes"))
-                    {
-                        Toast.makeText(getApplicationContext(), "Student cannot add more than 3 courses", Toast.LENGTH_LONG).show();
-                    }
-                    if(errorMessage.equalsIgnoreCase("Course is full"))
-                    {
-                        onWaitlistDialog();
-                    }
                 }catch (Exception e){
-
+                    e.printStackTrace();
                 }
             }
-//Process response here
         };
 
         Response.ErrorListener failure = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("rew", "post fail " + new String(error.networkResponse.data));
+                Log.i("TPV", "post fail " + new String(error.networkResponse.data));
             }
         };
 
         String addStudentToClassURL = SERVER_URL+REGISTER_CLASS;
-                //+"?"+STUDENT_RED_ID+"="+currentStudent.getmRedId()+"&"+STUDENT_PASSWORD+"="+currentStudent.getmPassword()+"&"+COURSE_ID+"="+getCourseID();
 
         JsonObjectRequest postRequest = new JsonObjectRequest(addStudentToClassURL, postParams, success, failure);
         VolleyQueue.instance(this).add(postRequest);
-        //return studentAdded;
     }
 
     public void onWaitlistDialog()
@@ -205,14 +264,15 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
                 Log.i("TPV", "Adding to waitlist");
                 addStudentToCourseWaitlist(LoginActivity.sessionStudent);
                 dialog.dismiss();
+                finish();
             }
         });
         noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("TPV", "Not adding to waitlist");
-                dropStudentToCourseWaitlist(LoginActivity.sessionStudent);
                 dialog.dismiss();
+                finish();
             }
         });
         dialog.show();
@@ -222,28 +282,28 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
     public void addStudentToCourseWaitlist(Student currentStudent){
 
         final JSONObject postParams = new JSONObject();
-        Long courseNumber = new Long(getCourseID());
+        Long courseNumber = Long.valueOf(getCourseID());
 
         try {
             postParams.put(STUDENT_RED_ID,currentStudent.getmRedId());
             postParams.put(STUDENT_PASSWORD,currentStudent.getmPassword());
             postParams.put(COURSE_ID,courseNumber);
         } catch (JSONException error) {
-            Log.e("rew", "JSON eorror", error);
+            Log.e("TPV", "JSON error", error);
             return;
         }
 
         Response.Listener<JSONObject> success = new Response.Listener<JSONObject>()
         {
             public void onResponse(JSONObject response) {
-                Log.i("rew", response.toString());
+                Log.i("TPV", response.toString());
             }
         };
 
         Response.ErrorListener failure = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("rew", "post fail " + new String(error.networkResponse.data));
+                Log.i("TPV", "post fail " + new String(error.networkResponse.data));
             }
         };
 
@@ -256,28 +316,39 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
     public void dropStudentToCourseWaitlist(Student currentStudent){
 
         final JSONObject postParams = new JSONObject();
-        Long courseNumber = new Long(getCourseID());
+        Long courseNumber = Long.valueOf(getCourseID());
 
         try {
             postParams.put(STUDENT_RED_ID,currentStudent.getmRedId());
             postParams.put(STUDENT_PASSWORD,currentStudent.getmPassword());
             postParams.put(COURSE_ID,courseNumber);
         } catch (JSONException error) {
-            Log.e("rew", "JSON eorror", error);
+            Log.e("TPV", "JSON error", error);
             return;
         }
 
         Response.Listener<JSONObject> success = new Response.Listener<JSONObject>()
         {
             public void onResponse(JSONObject response) {
-                Log.i("rew", response.toString());
+                Log.i("TPV", response.toString());
+                try{
+                if(response.has("error")) {
+                    if (response.getString("error").equalsIgnoreCase("Course dropped"))
+                        Toast.makeText(getApplicationContext(), "Course Dropped", Toast.LENGTH_LONG).show();
+                    if(response.getString("error").equalsIgnoreCase("Student not enrolled in course"))
+                        Toast.makeText(getApplicationContext(), "Student not enrolled in course", Toast.LENGTH_LONG).show();
+                }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         };
 
         Response.ErrorListener failure = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("rew", "post fail " + new String(error.networkResponse.data));
+                Log.i("TPV", "post fail " + new String(error.networkResponse.data));
             }
         };
 
@@ -286,7 +357,6 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
         JsonObjectRequest postRequest = new JsonObjectRequest(addStudentToClassURL, postParams, success, failure);
         VolleyQueue.instance(this).add(postRequest);
     }
-
 
     public String getCourseID() {
         return courseID;

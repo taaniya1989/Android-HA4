@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -31,10 +29,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
-import edu.sdsu.tvidhate.registerationapp.Activity.CourseDetailActivity;
+import edu.sdsu.tvidhate.registerationapp.Activity.LoginActivity;
 import edu.sdsu.tvidhate.registerationapp.Entity.Course;
-import edu.sdsu.tvidhate.registerationapp.Helper.RVCourseDetailAdapter;
 import edu.sdsu.tvidhate.registerationapp.Helper.RVCourseIDAdapter;
 import edu.sdsu.tvidhate.registerationapp.Helper.ServerConstants;
 import edu.sdsu.tvidhate.registerationapp.Helper.VolleyQueue;
@@ -42,38 +40,39 @@ import edu.sdsu.tvidhate.registerationapp.R;
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemSelectedListener,ServerConstants,View.OnClickListener
 {
-    private Spinner mMajorSpinner,mLevelSpinner,mStartTimeSpinner;
-    private Button mSearchButton;
-    private List<String> majorsList = new ArrayList<String>();
+    private Spinner mMajorSpinner;
+    private List<String> majorsList = new ArrayList<>();
     private String majorValue="",levelValue="",startTimeValue="";
-    RecyclerView rv;
-    private String getClassIdsListURL;
-    private String getClassDetailsURL = SERVER_URL+CLASS_DETAILS+"?"+CLASS_ID+"=";;
-    private List<String> courseListID;
-    private List<Course> courseDetailsList;
+    RecyclerView courseRecyclerView;
+    private List<String> courseListID = new ArrayList<>();
+    private List<Course> courseDetailsList = new ArrayList<>();
     private HashMap<String,Integer> majorsInfo = new HashMap<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
+
+        Button mSearchButton;
+        Spinner mLevelSpinner,mStartTimeSpinner;
+
         mMajorSpinner = view.findViewById(R.id.majorSpinner);
         mLevelSpinner = view.findViewById(R.id.levelSpinner);
         mStartTimeSpinner = view.findViewById(R.id.startTimeSpinner);
         mSearchButton = view.findViewById(R.id.searchButton);
 
-        getMajors();
         mMajorSpinner.setOnItemSelectedListener(this);
         mLevelSpinner.setOnItemSelectedListener(this);
         mStartTimeSpinner.setOnItemSelectedListener(this);
         mSearchButton.setOnClickListener(this);
 
-        rv = view.findViewById(R.id.subjectListView);
-
+        courseRecyclerView = view.findViewById(R.id.subjectListView);
         courseListID = new ArrayList<>();
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        rv.setLayoutManager(llm);
 
+        LinearLayoutManager courseLinearLayoutManager = new LinearLayoutManager(getContext());
+        courseRecyclerView.setLayoutManager(courseLinearLayoutManager);
+
+        getMajors();
         return view;
     }
 
@@ -81,86 +80,128 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
     public void onClick(View v) {
         if(v.getId() == R.id.searchButton)
         {
-            if(getMajorValue() == "" )
+            courseListID.clear();
+            courseDetailsList.clear();
+            if(getMajorValue().equalsIgnoreCase(""))
                 Toast.makeText(getContext(),"Please select Major",Toast.LENGTH_LONG).show();
             else {
-                getClassIdsListURL = SERVER_URL+CLASS_IDS_LIST+"?"+SUBJECT_ID+"="+majorsInfo.get(getMajorValue());
+                String getClassIdsListURL = SERVER_URL+CLASS_IDS_LIST+"?"+SUBJECT_ID+"="+majorsInfo.get(getMajorValue());
                 if(getLevelValue() != "")
                     getClassIdsListURL = getClassIdsListURL+"&"+LEVEL+"="+getLevelValue();
                 if(getStartTimeValue() != "")
                     getClassIdsListURL = getClassIdsListURL+"&"+START_TIME+"="+getStartTimeValue();
                 getCoursesID(getClassIdsListURL);
-                Log.i("TPV","OnClick"+courseListID.toString());
+                Log.i("TPV","OnClick : "+courseListID.toString());
             }
 
         }
-        Log.i("TPV",v.getId()+" "+R.id.searchButton);
     }
 
     public void getCoursesID(String getClassIdsListURL)
     {
         Log.i("TPV",getClassIdsListURL);
         courseListID = new ArrayList<>();
-        JsonArrayRequest req = new JsonArrayRequest(getClassIdsListURL, new Response.Listener<JSONArray>() {
+
+        Response.Listener<JSONArray> success = new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d("TPV", response.toString());
                 try {
                     for(int i=0;i<response.length();i++){
-                        Integer courseID = (Integer)response.get(i);
-                        Log.d("TPV", response.get(i).toString()+" "+courseID.toString());
+                        Integer courseID = (Integer) response.get(i);
+
                         courseListID.add(courseID.toString());
-                        //getCoursesDetails(getClassDetailsURL+courseID);
+                        Log.d("TPV","CourseListID contents "+ courseListID.toString());
                     }
-                    rv.setAdapter(new RVCourseIDAdapter(courseListID));
+                    for (int i=0; i<courseListID.size();i++)
+                    {
+                        getCoursesDetails(courseListID.get(i));
+                    }
                     Log.i("TPV","In Response Listener "+courseListID.toString());
 
                 } catch (JSONException e) {
-                     e.printStackTrace();
+                    e.printStackTrace();
                 }
-            }}, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("TPV", error.toString());
-                }
-            });
-        VolleyQueue.instance(getContext()).add(req);
+            }};
+
+        Response.ErrorListener failure = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TPV", error.toString());
+            }
+        };
+
+        JsonArrayRequest getArrayRequest = new JsonArrayRequest(getClassIdsListURL,success ,failure);
+        VolleyQueue.instance(getContext()).add(getArrayRequest);
+    }
+
+    private void getCoursesDetails(String aLong) {
+
+        Response.Listener<JSONObject> success = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                Course course = new Course(response);
+                courseDetailsList.add(course);
+                //LoginActivity.dbHelper.insertCourseData(course);
+                courseRecyclerView.setAdapter(new RVCourseIDAdapter(courseDetailsList));
+            }
+        };
+        Response.ErrorListener failure = new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TPV", "Error: " + error.getMessage());
+                Toast.makeText(getContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+
+            }
+        };
+
+        String getClassDetailsURL = SERVER_URL + CLASS_DETAILS + "?" + CLASS_ID + "=";
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                getClassDetailsURL +aLong, null, success, failure);
+        VolleyQueue.instance(this.getContext()).add(jsonObjReq);
     }
 
     public void getMajors()
     {
-        JsonArrayRequest req = new JsonArrayRequest(SERVER_URL+SUBJECT_LIST,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("TPV", response.toString());
-                        try {
-                            for(int i=0;i<response.length();i++){
-                                JSONObject subject = response.getJSONObject(i);
-                                int subjectId = subject.getInt("id");
-                                String subjectName = subject.getString("title");
-                                majorsInfo.put(subjectName,subjectId);
-                                majorsList.add(subjectName);
-                            }
-                            loadSpinnerData(majorsList,mMajorSpinner);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        Response.Listener<JSONArray> success = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("TPV", response.toString());
+                try {
+                    for(int i=0;i<response.length();i++){
+                        JSONObject subject = response.getJSONObject(i);
+                        int subjectId = subject.getInt("id");
+                        String subjectName = subject.getString("title");
+                        majorsInfo.put(subjectName,subjectId);
+                        majorsList.add(subjectName);
                     }
-                }, new Response.ErrorListener() {
+                    loadSpinnerData(majorsList,mMajorSpinner);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Response.ErrorListener failure =  new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("TPV", error.toString());
 
             }
-        });
+        };
+        JsonArrayRequest req = new JsonArrayRequest(SERVER_URL+SUBJECT_LIST,
+                success, failure);
         VolleyQueue.instance(this.getContext()).add(req);
     }
 
     private void loadSpinnerData(List<String> dataList,Spinner spinner)
     {
         ArrayAdapter<String> dataAdapter;
-        dataAdapter = new ArrayAdapter<>(getContext(),
+        dataAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
                 android.R.layout.simple_spinner_item, dataList);
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -195,10 +236,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                 setStartTimeValue(label);
                 break;
         }
-    }
-
-    public Spinner getmMajorSpinner() {
-        return mMajorSpinner;
     }
 
     public String getMajorValue() {

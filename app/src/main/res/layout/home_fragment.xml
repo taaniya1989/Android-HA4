@@ -44,15 +44,67 @@
             android:textColor="@color/colorBackground"/>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp">
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/horizontal_spacing"
+        >
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:text="CNo."
+            android:textSize="@dimen/textSize"
+            android:padding="4dp"
+            android:background="@drawable/border"
+            android:id="@+id/courseid"
+            />
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="Title"
+            android:textSize="@dimen/textSize"
+            android:padding="4dp"
+            android:background="@drawable/border"
+            android:id="@+id/coursetitle"
+            android:layout_toRightOf="@id/courseid"
+            />
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:text="Timing"
+            android:textSize="@dimen/textSize"
+            android:padding="4dp"
+            android:background="@drawable/border"
+            android:id="@+id/coursetime"
+            android:layout_toRightOf="@id/coursetitle"
+            />
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="Instructor"
+            android:textSize="@dimen/textSize"
+            android:padding="4dp"
+            android:background="@drawable/border"
+            android:id="@+id/courseinstructor"
+            android:layout_toRightOf="@id/coursetime"
+            />
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="Waitlisted"
+            android:textSize="@dimen/textSize"
+            android:padding="4dp"
+            android:background="@drawable/border"
+            android:id="@+id/coursewaitlist"
+            android:layout_toRightOf="@id/courseinstructor"
+            />
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/subjectListView" />
-    </LinearLayout>
+            android:id="@+id/subjectListView"
+            android:layout_below="@id/coursewaitlist"
+            android:background="@drawable/border"/>
+    </RelativeLayout>
 
 </LinearLayout>
