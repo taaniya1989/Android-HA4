@@ -9,4 +9,6 @@
     <color name="darkRed">#ca4b44</color>
     <color name="darkest_red">#270b09</color>
     <color name="medium_red">#e29b97</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
 </resources>

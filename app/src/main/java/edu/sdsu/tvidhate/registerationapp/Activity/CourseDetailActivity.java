@@ -1,6 +1,7 @@
 package edu.sdsu.tvidhate.registerationapp.Activity;
 
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
@@ -21,9 +22,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 
 import edu.sdsu.tvidhate.registerationapp.Entity.Course;
 import edu.sdsu.tvidhate.registerationapp.Entity.Student;
+import edu.sdsu.tvidhate.registerationapp.Fragments.DashboardFragment;
 import edu.sdsu.tvidhate.registerationapp.Helper.RVCourseDetailAdapter;
 import edu.sdsu.tvidhate.registerationapp.Helper.ServerConstants;
 import edu.sdsu.tvidhate.registerationapp.Helper.VolleyQueue;
@@ -88,56 +91,24 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
 
     public void getCoursesDetails(String getCourseDetailsListURL)
     {
-    //    Cursor res = LoginActivity.dbHelper.getCourse(courseID);
-      //  if(res.getCount() == 0)
-       // {
-            Log.i("TPV",getCourseDetailsListURL);
-            JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,getCourseDetailsListURL,null ,new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Course currentCourse = new Course(response);
-                    Log.i("TPV",currentCourse.toString());
-                    courseDetails = currentCourse.getCourseDetailsInHashMap();
-                    courseDetailRecyclerView.setAdapter(new RVCourseDetailAdapter(courseDetails));
-                    Log.i("TPV","In Response Listener "+courseDetails.toString());
-                }}, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("TPV", error.toString());
-                }
-            });
-            VolleyQueue.instance(this).add(req);
-       /* }
-        else
-        {
-            Course currentCourse = new Course();
-            while(res.moveToNext())
-            {
-                currentCourse.setmId(res.getString(0));
-                currentCourse.setmDescription(res.getString(1));
-                currentCourse.setmDepartment(res.getString(2));
-                currentCourse.setmSuffix(res.getString(3));
-                currentCourse.setmBuilding(res.getString(4));
-                currentCourse.setmStartTime(res.getString(5));
-                currentCourse.setmMeetingType(res.getString(6));
-                currentCourse.setmSection(res.getString(7));
-                currentCourse.setmEndTime(res.getString(8));
-                currentCourse.setmEnrolled(res.getString(9));
-                currentCourse.setmDays(res.getString(10));
-                currentCourse.setmPrerequisite(res.getString(11));
-                currentCourse.setmTitle(res.getString(12));
-                currentCourse.setmInstructor(res.getString(13));
-                currentCourse.setmScheduleNo(res.getString(14));
-                currentCourse.setmUnit(res.getString(15));
-                currentCourse.setmRoom(res.getString(16));
-                currentCourse.setmWaitlist(res.getString(17));
-                currentCourse.setmSeats(res.getString(18));
-                currentCourse.setmFullTitle(res.getString(19));
-                currentCourse.setmSubject(res.getString(20));
-                currentCourse.setmCourseNo(res.getString(21));
+        Log.i("TPV",getCourseDetailsListURL);
+        Response.Listener<JSONObject> success = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Course currentCourse = new Course(response);
+                Log.i("TPV",currentCourse.toString());
+                courseDetails = currentCourse.getCourseDetailsInHashMap();
+                courseDetailRecyclerView.setAdapter(new RVCourseDetailAdapter(courseDetails));
+                Log.i("TPV","In Response Listener "+courseDetails.toString());
+            }};
+        Response.ErrorListener failure =  new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TPV", error.toString());
             }
-            courseDetailRecyclerView.setAdapter(new RVCourseDetailAdapter(currentCourse.getCourseDetailsInHashMap()));
-        }*/
+        };
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,getCourseDetailsListURL,null ,success,failure);
+        VolleyQueue.instance(this).add(req);
     }
 
     public void dropStudentToCourse(Student currentStudent){
@@ -160,14 +131,21 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
                 Log.i("TPV", response.toString());
                 try {
                     if(response.has("error")) {
-                        if (response.getString("error").equalsIgnoreCase("Course dropped"))
-                            Toast.makeText(getApplicationContext(), "Course Dropped", Toast.LENGTH_LONG).show();
-                        if(response.getString("error").equalsIgnoreCase("Student not enrolled in course"))
+                        if (response.getString("error").equalsIgnoreCase(COURSE_DROPPED)) {
+                            Toast.makeText(getApplicationContext(), COURSE_DROPPED, Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        if(response.getString("error").equalsIgnoreCase(USER_NOT_ENROLLED))
+                        {
                             dropStudentToCourseWaitlist(LoginActivity.sessionStudent);
+                        }
                     }
                     if(response.has("ok"))
-                        if(response.getString("ok").equalsIgnoreCase("Student already in course"))
-                            Toast.makeText(getApplicationContext(), "Student is Already enrolled in course", Toast.LENGTH_LONG).show();
+                        if(response.getString("ok").equalsIgnoreCase(USER_ALREADY_IN_COURSE))
+                        {
+                            Toast.makeText(getApplicationContext(), USER_ALREADY_IN_COURSE, Toast.LENGTH_LONG).show();
+                            finish();
+                        }
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -212,24 +190,31 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
                     if(response.has("error"))
                     {
                         String errorMessage = response.getString("error");
-                        if(errorMessage.equalsIgnoreCase("Student already enrolled in 3 classes"))
+                        if(errorMessage.equalsIgnoreCase(USER_REGISTERED_IN_3_COURSES))
                         {
-                            Toast.makeText(getApplicationContext(), "Student cannot add more than 3 courses", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), USER_REGISTERED_IN_3_COURSES, Toast.LENGTH_LONG).show();
                             finish();
                         }
-                        if(errorMessage.equalsIgnoreCase("Course is full"))
-                        {
-                            Log.i("TPV","is full ");
+                        if(errorMessage.equalsIgnoreCase(COURSE_IS_FULL))
                             onWaitlistDialog();
+                        if(errorMessage.equalsIgnoreCase(USER_ALREADY_IN_COURSE))
+                        {
+                            Toast.makeText(getApplicationContext(), USER_ALREADY_IN_COURSE, Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        if(errorMessage.equalsIgnoreCase(COURSE_TIMES_OVERLAP))
+                        {
+                            Toast.makeText(getApplicationContext(), COURSE_TIMES_OVERLAP, Toast.LENGTH_LONG).show();
+                            finish();
                         }
                     }
                     if(response.has("ok")) {
                         String okMessage = response.getString("ok");
-                        if (okMessage.equalsIgnoreCase("Course added")) {
-                            Toast.makeText(getApplicationContext(), "Course Added", Toast.LENGTH_LONG).show();
+                        if (okMessage.equalsIgnoreCase(COURSE_ADDED)) {
+                            Toast.makeText(getApplicationContext(), COURSE_ADDED, Toast.LENGTH_LONG).show();
                         }
+                        finish();
                     }
-
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -253,7 +238,6 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
     {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.waitlist_dialog);
-        dialog.setTitle("Waitlist Confirmation");
 
         Button yesButton = dialog.findViewById(R.id.yesButton);
         Button noButton = dialog.findViewById(R.id.noButton);
@@ -332,12 +316,12 @@ public class CourseDetailActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(JSONObject response) {
                 Log.i("TPV", response.toString());
                 try{
-                if(response.has("error")) {
-                    if (response.getString("error").equalsIgnoreCase("Course dropped"))
-                        Toast.makeText(getApplicationContext(), "Course Dropped", Toast.LENGTH_LONG).show();
-                    if(response.getString("error").equalsIgnoreCase("Student not enrolled in course"))
-                        Toast.makeText(getApplicationContext(), "Student not enrolled in course", Toast.LENGTH_LONG).show();
-                }
+                    if(response.has("error")) {
+                        if (response.getString("error").equalsIgnoreCase(COURSE_DROPPED))
+                            Toast.makeText(getApplicationContext(),COURSE_DROPPED, Toast.LENGTH_LONG).show();
+                        if(response.getString("error").equalsIgnoreCase(USER_NOT_ENROLLED))
+                            Toast.makeText(getApplicationContext(),USER_NOT_ENROLLED, Toast.LENGTH_LONG).show();
+                    }finish();
                 }
                 catch (Exception e){
                     e.printStackTrace();

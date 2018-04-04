@@ -1,9 +1,5 @@
 package edu.sdsu.tvidhate.registerationapp.Helper;
 
-/**
- * Created by tanvi on 3/25/18.
- */
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -43,14 +39,14 @@ public class DatabaseHelper extends SQLiteOpenHelper implements ServerConstants
                 ""+ COURSE_PREREQUISITE +" TEXT," +
                 ""+ COURSE_TITLE +" TEXT," +
                 ""+ COURSE_INSTRUCTOR +" TEXT," +
-                ""+ COURSE_SCHEDULE.toString().replace("#","") +" TEXT," +
+                ""+ COURSE_SCHEDULE.replace("#","") +" TEXT," +
                 ""+ COURSE_UNITS +" TEXT," +
                 ""+ COURSE_ROOM +" TEXT," +
                 ""+ COURSE_WAITLIST +" TEXT," +
                 ""+ COURSE_SEATS +" TEXT," +
                 ""+ COURSE_FULL_TITLE +" TEXT," +
                 ""+ COURSE_SUBJECT +" TEXT," +
-                ""+ COURSE_NO.toString().replace("#","") +" TEXT)");
+                ""+ COURSE_NO.replace("#","") +" TEXT)");
     }
 
     @Override
@@ -69,11 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements ServerConstants
         contentValues.put(STUDENT_EMAIL,student.getmEmailId());
         contentValues.put(STUDENT_PASSWORD,student.getmPassword());
         long result = db.insert(STUDENT_TABLE,null ,contentValues);
-        //db.close();
-        if(result == -1)
-            return false;
-        else
-            return true;
+        return result != -1;
     }
 
     public boolean insertCourseData(Course course)
@@ -103,29 +95,21 @@ public class DatabaseHelper extends SQLiteOpenHelper implements ServerConstants
         contentValues.put(COURSE_SUBJECT , course.getmSubject());
         contentValues.put(COURSE_NO.replace("#","") , course.getmCourseNo());
         long result = db.insert(COURSE_TABLE,null ,contentValues);
-        //db.close();
-        if(result == -1)
-            return false;
-        else
-            return true;
+        return result != -1;
     }
 
     public Cursor getCourse(String courseId){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM "+COURSE_TABLE+" WHERE "+COURSE_IID+"='"+courseId+"'",null);
-        return res;
+        return db.rawQuery("SELECT * FROM "+COURSE_TABLE+" WHERE "+COURSE_IID+"='"+courseId+"'",null);
     }
 
     public Cursor getAllCourses(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM "+COURSE_TABLE,null);
-        return res;
+        return db.rawQuery("SELECT * FROM "+COURSE_TABLE,null);
     }
 
     public Cursor authenticateUser(String emailID, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM "+STUDENT_TABLE+" WHERE "+STUDENT_EMAIL+"='"+emailID+"'",null);
-        //db.close();
-        return res;
+        return db.rawQuery("SELECT * FROM "+STUDENT_TABLE+" WHERE "+STUDENT_EMAIL+"='"+emailID+"'",null);
     }
 }

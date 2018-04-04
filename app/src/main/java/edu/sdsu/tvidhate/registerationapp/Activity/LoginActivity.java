@@ -13,7 +13,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.sdsu.tvidhate.registerationapp.Entity.Notifications;
 import edu.sdsu.tvidhate.registerationapp.Entity.Student;
 import edu.sdsu.tvidhate.registerationapp.Helper.DatabaseHelper;
 import edu.sdsu.tvidhate.registerationapp.Helper.ServerConstants;
@@ -26,7 +25,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public static Student sessionStudent;
     public static DatabaseHelper dbHelper;
-    public static List<Notifications> allNotifications;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +41,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mLogIn.setOnClickListener(this);
 
         dbHelper = new DatabaseHelper(this);
-        allNotifications = new ArrayList<>();
     }
 
     @Override

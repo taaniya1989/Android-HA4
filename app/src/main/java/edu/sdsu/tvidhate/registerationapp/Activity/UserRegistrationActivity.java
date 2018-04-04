@@ -13,7 +13,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.sdsu.tvidhate.registerationapp.Entity.Notifications;
 import edu.sdsu.tvidhate.registerationapp.Entity.Student;
 import edu.sdsu.tvidhate.registerationapp.Helper.ServerConstants;
 import edu.sdsu.tvidhate.registerationapp.Helper.VolleyQueue;
@@ -130,8 +129,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                     UserRegistrationActivity.this.setStudentDataSavedToDevice(LoginActivity.dbHelper.insertStudentData(currentStudent));
                     if (UserRegistrationActivity.this.isStudentDataSavedToDevice())// && UserRegistrationActivity.this.isStudentDataPostedToServer())
                     {
-                        LoginActivity.allNotifications.add(new Notifications((System.currentTimeMillis()/1000),USER_ADDED));
-                        Log.i("TPV",LoginActivity.allNotifications.toString());
+                        Log.i("TPV","Data saved to device");
                     }
                     else
                     {

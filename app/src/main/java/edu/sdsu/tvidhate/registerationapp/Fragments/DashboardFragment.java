@@ -41,7 +41,7 @@ public class DashboardFragment extends Fragment implements ServerConstants//,Vie
 {
     RecyclerView rv,rv1;
     String getRegisteredClassIdsListURL = SERVER_URL+STUDENT_CLASSES+"?";
-    List<String> courseListID;
+    List<String> courseListID = new ArrayList<>();
     List<Course> courseDetailsList = new ArrayList<>();
     List<Course> waitlistedCourseDetailsList = new ArrayList<>();
     private String getClassDetailsURL = SERVER_URL+CLASS_DETAILS+"?"+CLASS_ID+"=";
@@ -86,7 +86,8 @@ public class DashboardFragment extends Fragment implements ServerConstants//,Vie
     public void getRegisteredCourse(String getRegisteredClassIdsListURL)
     {
         Log.i("TPV",getRegisteredClassIdsListURL);
-        courseListID = new ArrayList<>();
+        //courseListID.clear();
+
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,getRegisteredClassIdsListURL,null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -170,5 +171,11 @@ public class DashboardFragment extends Fragment implements ServerConstants//,Vie
 
         // Adding request to request queue
         VolleyQueue.instance(this.getContext()).add(jsonObjReq);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+     //   getRegisteredCourse(getRegisteredClassIdsListURL);
     }
 }

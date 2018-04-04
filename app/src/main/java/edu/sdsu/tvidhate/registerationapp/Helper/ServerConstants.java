@@ -58,5 +58,12 @@ public interface ServerConstants {
 
     //MESSAGES
     String USER_ADDED = "Created new User";
+    String USER_REGISTERED_IN_3_COURSES = "Student already enrolled in 3 classes";
+    String COURSE_IS_FULL = "Course is full";
+    String USER_ALREADY_IN_COURSE = "Student already in course";
+    String COURSE_TIMES_OVERLAP = "Course time overlaps with existing course";
+    String COURSE_ADDED = "Course added";
+    String COURSE_DROPPED = "Course dropped";
+    String USER_NOT_ENROLLED = "Student not enrolled in course";
 }
 

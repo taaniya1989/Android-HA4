@@ -7,29 +7,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="0.5dp"
-        android:background="@color/colorBackground">
+        android:background="@drawable/border">
         <TextView
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:id="@+id/courseKey"
-            android:textSize="16dp"
-            android:padding="8dp"
-            android:background="@color/colorBackground"
+            android:textSize="@dimen/textSize"
+            android:padding="@dimen/eight_dp_padding"
             android:textColor="@color/darkest_red"
-            android:text="Key"
             android:textStyle="bold"
             android:textAllCaps="true"
             />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:id="@+id/courseValue"
-            android:textSize="16dp"
-            android:padding="8dp"
-            android:background="@color/colorBackground"
+            android:textSize="@dimen/textSize"
+            android:padding="@dimen/eight_dp_padding"
             android:textColor="@color/darkest_red"
-            android:text="Value"
             />
     </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -16,10 +16,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/backButton"
             android:text="@string/back"
-            android:background="@color/medium_red"
+            android:background="@color/darkRed"
             android:textColor="@color/colorBackground"
             android:layout_weight="1"
-            android:layout_margin="16dp"/>
+            android:layout_margin="@dimen/horizontal_spacing"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
             android:background="@color/darkRed"
             android:textColor="@color/colorBackground"
             android:layout_weight="1"
-            android:layout_margin="16dp"/>
+            android:layout_margin="@dimen/horizontal_spacing"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
             android:background="@color/darkRed"
             android:textColor="@color/colorBackground"
             android:layout_weight="1"
-            android:layout_margin="16dp"/>
+            android:layout_margin="@dimen/horizontal_spacing"/>
 
     </LinearLayout>
 
@@ -53,16 +53,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/courseDetails"
-            android:textSize="32dp"
+            android:textSize="@dimen/titles"
             android:textStyle="bold"
-            android:layout_margin="8dp"/>
+            android:layout_margin="@dimen/eight_dp_padding"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="@dimen/sixteen_dp_padding">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

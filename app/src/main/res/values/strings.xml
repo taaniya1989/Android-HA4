@@ -17,6 +17,8 @@
     <string name="hint_red_id">Enter Red ID</string>
     <string name="selectAction">Select Course Action</string>
     <string name="courseDetails">Course Details</string>
+    <string name="course_registered">Courses Registered</string>
+    <string name="waitlist_confirmation">Do you want to add course to waitlist?</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="add">Add</string>
@@ -24,6 +26,15 @@
     <string name="view">View</string>
     <string name="search">Search</string>
     <string name="back">Back</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout">Logout</string>
+
+    <string name="title">Title</string>
+    <string name="cno">Cno.</string>
+    <string name="timing">Timing</string>
+    <string name="instructor">Instructor</string>
+    <string name="waitlistcount">Waitlisted</string>
 
     <string name="EMAIL">EMAIL</string>
     <string name="PASSWORD">PASSWORD</string>
@@ -46,53 +57,53 @@
         <item>upperdivision</item>
     </string-array>
     <string-array name="startTimes">
-        <item>00:00</item>
-        <item>00:30</item>
-        <item>01:00</item>
-        <item>01:30</item>
-        <item>02:00</item>
-        <item>02:30</item>
-        <item>03:00</item>
-        <item>03:30</item>
-        <item>04:00</item>
-        <item>04:30</item>
-        <item>05:00</item>
-        <item>05:30</item>
-        <item>06:00</item>
-        <item>06:30</item>
-        <item>07:00</item>
-        <item>07:30</item>
-        <item>08:00</item>
-        <item>08:30</item>
-        <item>09:00</item>
-        <item>09:30</item>
-        <item>10:00</item>
-        <item>10:30</item>
-        <item>11:00</item>
-        <item>11:30</item>
-        <item>12:00</item>
-        <item>12:30</item>
-        <item>13:00</item>
-        <item>13:30</item>
-        <item>14:00</item>
-        <item>14:30</item>
-        <item>15:00</item>
-        <item>15:30</item>
-        <item>16:00</item>
-        <item>16:30</item>
-        <item>17:00</item>
-        <item>17:30</item>
-        <item>18:00</item>
-        <item>18:30</item>
-        <item>19:00</item>
-        <item>19:30</item>
-        <item>20:00</item>
-        <item>20:30</item>
-        <item>21:00</item>
-        <item>21:30</item>
-        <item>22:00</item>
-        <item>22:30</item>
-        <item>23:00</item>
-        <item>23:30</item>
+        <item>0000</item>
+        <item>0030</item>
+        <item>0100</item>
+        <item>0130</item>
+        <item>0200</item>
+        <item>0230</item>
+        <item>0300</item>
+        <item>0330</item>
+        <item>0400</item>
+        <item>0430</item>
+        <item>0500</item>
+        <item>0530</item>
+        <item>0600</item>
+        <item>0630</item>
+        <item>0700</item>
+        <item>0730</item>
+        <item>0800</item>
+        <item>0830</item>
+        <item>0900</item>
+        <item>0930</item>
+        <item>1000</item>
+        <item>1030</item>
+        <item>1100</item>
+        <item>1130</item>
+        <item>1200</item>
+        <item>1230</item>
+        <item>1300</item>
+        <item>1330</item>
+        <item>1400</item>
+        <item>1430</item>
+        <item>1500</item>
+        <item>1530</item>
+        <item>1600</item>
+        <item>1630</item>
+        <item>1700</item>
+        <item>1730</item>
+        <item>1800</item>
+        <item>1830</item>
+        <item>1900</item>
+        <item>1930</item>
+        <item>2000</item>
+        <item>2030</item>
+        <item>2100</item>
+        <item>2130</item>
+        <item>2200</item>
+        <item>2230</item>
+        <item>2300</item>
+        <item>2330</item>
     </string-array>
 </resources>

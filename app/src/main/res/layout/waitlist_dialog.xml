@@ -6,36 +6,36 @@
 
     <TextView
         android:id="@+id/customDialogText"
-        android:text="Do you want to add course to waitlist?"
+        android:text="@string/waitlist_confirmation"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorText"
         android:gravity="center"
-        android:textSize="24dp"
-        android:layout_marginTop="32dp"
-        android:padding="16dp"/>
+        android:textSize="@dimen/titles"
+        android:layout_marginTop="@dimen/vertical_spacing"
+        android:padding="@dimen/sixteen_dp_padding"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="@dimen/sixteen_dp_padding">
 
         <Button
             android:id="@+id/yesButton"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero_dp"
             android:layout_height="wrap_content"
-            android:text="Yes"
+            android:text="@string/yes"
             android:layout_weight="1"
             android:background="@color/darkRed"
             android:textColor="@color/colorBackground"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="@dimen/horizontal_spacing"
             />
         <Button
             android:id="@+id/noButton"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero_dp"
             android:layout_height="wrap_content"
-            android:text="No"
+            android:text="@string/no"
             android:layout_weight="1"
             android:background="@color/darkest_red"
             android:textColor="@color/colorBackground"
